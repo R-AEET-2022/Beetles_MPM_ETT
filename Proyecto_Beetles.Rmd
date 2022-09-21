@@ -1,19 +1,37 @@
 ---
-title: "1_data_description"
-output: html_document
-date: "2022-09-21"
+title: "Proyecto Beetles"
+author: Mariona Pajares y Estefanía Tobajas
+output:
+  pdf_document: default
+  html_document: default
+date: '2022-09-21'
 ---
+los datos de origen presenta 4 años de estudio (desde 2008 a 2011) donde se registra la abundancia de 150 especies distintas 
 
-#Library
-```{r}
-library("tidyverse")
-library("tidyverse")
-library("here") 
-library("tidylog") 
-library("summarytools") 
-library("knitr")
-library("performance")
-library("effects")
+calculamos la riqueza de especies de escarabajos para cada sitio y año
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+library(tidyverse)
+library(tidyverse)
+library(here) 
+library(tidylog) 
+library(summarytools) 
+library(knitr)
+library(performance)
+library(effects)
+library(kableExtra)
+
+
+rawdata <- read.csv("datos/rawdata_bet.csv")
+rawdata$YEAR<-as.factor(rawdata$YEAR)
+
+bet_sum<-rawdata %>%
+  group_by(PLOT, YEAR) %>%
+  summarise(n_species = n(),ABUNDANCE = sum(ABUNDANCE))%>%
+  rename(plot=PLOT, year=YEAR, abundance= ABUNDANCE)
+
+bet_sum %>% 
+    kable("latex",booktabs = TRUE, digits =  4,longtable = T,linesep = "")%>%
+  kable_styling(font_size = 8,full_width = F, position="left")
 ```
 
 #Import data
@@ -51,4 +69,5 @@ clean_data %>%
         axis.text.x = element_text(angle = 30, hjust = 1)) +
   labs(y = "No. of species", x = "Plot")
 ```
+
 
