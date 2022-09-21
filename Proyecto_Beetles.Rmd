@@ -1,0 +1,54 @@
+---
+title: "1_data_description"
+output: html_document
+date: "2022-09-21"
+---
+
+#Library
+```{r}
+library("tidyverse")
+library("tidyverse")
+library("here") 
+library("tidylog") 
+library("summarytools") 
+library("knitr")
+library("performance")
+library("effects")
+```
+
+#Import data
+```{r}
+rawdata <- read.csv("datos/rawdata_bet.csv")
+```
+
+#Clean data
+```{r}
+#remove nonsense variables
+rawdata$BIOMASS <- NULL
+rawdata$DAY <- NULL
+rawdata$MONTH <- NULL
+rawdata$LATITUDE <- NULL
+rawdata$LONGITUDE <- NULL
+rawdata$SAMPLE_DESC <- NULL
+rawdata$YEAR <- as.factor(rawdata$YEAR)
+rawdata$PLOT <- as.factor(rawdata$PLOT)
+
+#please stop with the capital letters 
+clean_data <- rawdata  %>% rename(plot = PLOT, year = YEAR, abundance = ABUNDANCE, genus_species = GENUS_SPECIES)
+
+rm(rawdata)
+```
+
+#Plot data
+```{r}
+clean_data %>% 
+  group_by(plot, genus_species) %>% summarise(n_species = n()) %>%
+  ggplot(aes(x = plot, y = n_species, color = plot, fill = plot)) +
+  geom_boxplot(alpha = .5) + 
+  geom_jitter(alpha = .5) +
+  theme_light() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 30, hjust = 1)) +
+  labs(y = "No. of species", x = "Plot")
+```
+
