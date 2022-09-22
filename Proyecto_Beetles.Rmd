@@ -59,7 +59,7 @@ summary(mod_richness)
 ```
 
 \newpage
-Nice model, big NO. 
+
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 plot(allEffects(mod_richness))
 ```
