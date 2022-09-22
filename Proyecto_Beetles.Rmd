@@ -2,15 +2,15 @@
 title: "Proyecto Beetles"
 author: Mariona Pajares y Estefanía Tobajas
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 date: '2022-09-21'
 ---
 los datos de origen presenta 4 años de estudio (desde 2008 a 2011) donde se registra la abundancia de 150 especies distintas 
 
+
 calculamos la riqueza de especies de escarabajos para cada sitio y año
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
-library(tidyverse)
 library(tidyverse)
 library(here) 
 library(tidylog) 
@@ -19,8 +19,10 @@ library(knitr)
 library(performance)
 library(effects)
 library(kableExtra)
+```
 
 
+```{r, warning=FALSE,message=FALSE}
 rawdata <- read.csv("datos/rawdata_bet.csv")
 rawdata$YEAR<-as.factor(rawdata$YEAR)
 
@@ -29,45 +31,36 @@ bet_sum<-rawdata %>%
   summarise(n_species = n(),ABUNDANCE = sum(ABUNDANCE))%>%
   rename(plot=PLOT, year=YEAR, abundance= ABUNDANCE)
 
+```
+
+```{r, echo=FALSE, warning=FALSE,message=FALSE, out.width="80%",}
 bet_sum %>% 
     kable("latex",booktabs = TRUE, digits =  4,longtable = T,linesep = "")%>%
   kable_styling(font_size = 8,full_width = F, position="left")
 ```
 
-#Import data
-```{r}
-rawdata <- read.csv("datos/rawdata_bet.csv")
+\newpage
+
+
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+p1 <- ggplot(bet_sum, aes(x = year,y = n_species)) +
+  geom_point(color="blue")
+p1
 ```
 
-#Clean data
-```{r}
-#remove nonsense variables
-rawdata$BIOMASS <- NULL
-rawdata$DAY <- NULL
-rawdata$MONTH <- NULL
-rawdata$LATITUDE <- NULL
-rawdata$LONGITUDE <- NULL
-rawdata$SAMPLE_DESC <- NULL
-rawdata$YEAR <- as.factor(rawdata$YEAR)
-rawdata$PLOT <- as.factor(rawdata$PLOT)
+```{r,,echo=FALSE, warning=FALSE,message=FALSE}
+mod_richness = lm(n_species ~ year, data = bet_sum)
+summary(mod_richness)
 
-#please stop with the capital letters 
-clean_data <- rawdata  %>% rename(plot = PLOT, year = YEAR, abundance = ABUNDANCE, genus_species = GENUS_SPECIES)
-
-rm(rawdata)
 ```
 
-#Plot data
-```{r}
-clean_data %>% 
-  group_by(plot, genus_species) %>% summarise(n_species = n()) %>%
-  ggplot(aes(x = plot, y = n_species, color = plot, fill = plot)) +
-  geom_boxplot(alpha = .5) + 
-  geom_jitter(alpha = .5) +
-  theme_light() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle = 30, hjust = 1)) +
-  labs(y = "No. of species", x = "Plot")
+\newpage
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+plot(allEffects(mod_richness))
 ```
 
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+performance::check_model(mod_richness)
+
+```
 
