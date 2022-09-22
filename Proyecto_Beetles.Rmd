@@ -33,10 +33,11 @@ bet_sum<-rawdata %>%
 
 ```
 
-```{r, echo=FALSE, warning=FALSE,message=FALSE, out.width="80%",}
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="80%"}
 bet_sum %>% 
-    kable("latex",booktabs = TRUE, digits =  4,longtable = T,linesep = "")%>%
-  kable_styling(font_size = 8,full_width = F, position="left")
+    slice_head() %>% 
+   kable(booktabs = TRUE, digits =  4,longtable = T,linesep = "")%>%
+  kable_styling(font_size = 15,full_width = F, position="center")
 ```
 
 \newpage
@@ -44,7 +45,8 @@ bet_sum %>%
 
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 p1 <- ggplot(bet_sum, aes(x = year,y = n_species)) +
-  geom_point(color="blue")
+  geom_point(color="blue")+
+xlab("Year")+ylab("species richness")
 p1
 ```
 
