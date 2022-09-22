@@ -6,10 +6,11 @@ output:
   pdf_document: default
 date: '2022-09-21'
 ---
-los datos de origen presenta 4 años de estudio (desde 2008 a 2011) donde se registra la abundancia de 150 especies distintas 
+We used the metadata collected in the Bavarian Forest National Park in southeastern Germany, dominated by sub alpine forests of Picea abies. In a dead wood zone caused by the 2011 super German storm, 150 different species were monitored.Sampling season was conducted between May and September over four years (2008-2011).
 
+The years passed but, did the forest restoration methods improved beetles richness?
 
-calculamos la riqueza de especies de escarabajos para cada sitio y año
+First, let’s calculate species richness by sampling site and year 
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 library(tidyverse)
 library(here) 
@@ -20,7 +21,6 @@ library(performance)
 library(effects)
 library(kableExtra)
 ```
-
 
 ```{r, warning=FALSE,message=FALSE}
 rawdata <- read.csv("datos/rawdata_bet.csv")
@@ -42,6 +42,7 @@ bet_sum %>%
 
 \newpage
 
+Second, plot that nice data
 
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 p1 <- ggplot(bet_sum, aes(x = year,y = n_species)) +
@@ -50,6 +51,7 @@ xlab("Year")+ylab("species richness")
 p1
 ```
 
+Is there any differences in species richness by year?
 ```{r,,echo=FALSE, warning=FALSE,message=FALSE}
 mod_richness = lm(n_species ~ year, data = bet_sum)
 summary(mod_richness)
@@ -57,6 +59,7 @@ summary(mod_richness)
 ```
 
 \newpage
+Nice model, big NO. 
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 plot(allEffects(mod_richness))
 ```
