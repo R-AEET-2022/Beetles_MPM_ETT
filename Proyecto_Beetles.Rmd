@@ -2,15 +2,19 @@
 title: "Proyecto Beetles"
 author: Mariona Pajares y Estefanía Tobajas
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 date: '2022-09-21'
 ---
+
 We used the metadata collected in the Bavarian Forest National Park in southeastern Germany, dominated by sub alpine forests of Picea abies. In a dead wood zone caused by the 2011 super German storm, 150 different species were monitored.Sampling season was conducted between May and September over four years (2008-2011).
+
+![](images/Captura1.PNG)
 
 The years passed but, did the forest restoration methods improved beetles richness?
 
-First, let’s calculate species richness by sampling site and year 
+First, let's calculate species richness by sampling site and year
+
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 library(tidyverse)
 library(here) 
@@ -53,6 +57,7 @@ p1
 ```
 
 Is there any differences in species richness by year?
+
 ```{r,,echo=FALSE, warning=FALSE,message=FALSE}
 mod_richness = lm(n_species ~ year, data = bet_sum)
 summary(mod_richness)
@@ -70,10 +75,10 @@ performance::check_model(mod_richness)
 
 ```
 
-
 \newpage
 
 Mixed model with random = plot
+
 ```{r,,echo=FALSE, warning=FALSE,message=FALSE}
 mix_mod_richness = lmer(n_species ~ year +(1|plot), data = bet_sum)
 summary(mix_mod_richness)
@@ -92,6 +97,7 @@ performance::check_model(mix_mod_richness)
 ```
 
 \newpage
+
 Is there any differences in species abundance by year?
 
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
@@ -100,7 +106,6 @@ p2 <- ggplot(bet_sum, aes(x = year,y = abundance)) +
 xlab("Year")+ylab("species abundance")
 p2
 ```
-
 
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 mod_abundance = lm(abundance ~ year, data = bet_sum)
@@ -119,9 +124,10 @@ performance::check_model(mod_abundance)
 
 ```
 
-
 \newpage
+
 binomial negativa
+
 ```{r,,echo=FALSE, warning=FALSE,message=FALSE}
 library(MASS)
 mod_bn<-glm.nb(abundance ~ year, data = bet_sum)
