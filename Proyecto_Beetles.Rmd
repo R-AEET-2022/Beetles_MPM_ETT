@@ -2,8 +2,8 @@
 title: "Proyecto Beetles"
 author: Mariona Pajares y Estefanía Tobajas
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 date: '2022-09-21'
 ---
 We used the metadata collected in the Bavarian Forest National Park in southeastern Germany, dominated by sub alpine forests of Picea abies. In a dead wood zone caused by the 2011 super German storm, 150 different species were monitored.Sampling season was conducted between May and September over four years (2008-2011).
@@ -102,7 +102,7 @@ p2
 ```
 
 
-```{r,,echo=FALSE, warning=FALSE,message=FALSE}
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
 mod_abundance = lm(abundance ~ year, data = bet_sum)
 summary(mod_abundance)
 
@@ -120,22 +120,17 @@ performance::check_model(mod_abundance)
 ```
 
 
-\newpage
 
-Mixed model with random = plot
+\newpage
+binomial negativa
 ```{r,,echo=FALSE, warning=FALSE,message=FALSE}
-mix_mod_abundance = lmer(abundance ~ year +(1|plot), data = bet_sum)
-summary(mix_mod_abundance)
+library(MASS)
+mod_bn<-glm.nb(abundance ~ year, data = bet_sum)
+summary(mod_bn)
 
 ```
 
-\newpage
-
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
-plot(allEffects(mix_mod_abundance))
-```
-
-```{r,echo=FALSE, warning=FALSE,message=FALSE}
-performance::check_model(mix_mod_abundance)
+performance::check_model(mod_bn)
 
 ```
