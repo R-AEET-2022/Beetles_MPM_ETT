@@ -2,8 +2,8 @@
 title: "Proyecto Beetles"
 author: Mariona Pajares y Estefanía Tobajas
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 date: '2022-09-21'
 ---
 We used the metadata collected in the Bavarian Forest National Park in southeastern Germany, dominated by sub alpine forests of Picea abies. In a dead wood zone caused by the 2011 super German storm, 150 different species were monitored.Sampling season was conducted between May and September over four years (2008-2011).
