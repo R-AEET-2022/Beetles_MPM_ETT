@@ -120,7 +120,6 @@ performance::check_model(mod_abundance)
 ```
 
 
-
 \newpage
 binomial negativa
 ```{r,,echo=FALSE, warning=FALSE,message=FALSE}
